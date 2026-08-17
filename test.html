@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Audio Button Test - Anti-Refresh Protection</title>
+</head>
+<body style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px;">
+
+    
+    <!-- Button -->
+    <button id="test-btn" onclick="playAudioOnce()" style="background: #0a7a3b; color: white; padding: 12px 24px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer;">
+        Click to Start Listening
+    </button>
+
+    <p id="status-text" style="margin-top: 15px; color: #555; font-size: 14px;">Audio can only be played once.</p>
+
+    <!-- Hidden audio element -->
+    <audio id="listening-audio" src="listening.mp3"></audio>
+
+    <script>
+        // Check local storage immediately when the page loads or refreshes
+        window.onload = function() {
+            if (localStorage.getItem('audioPlayed') === 'true') {
+                lockAudioButton();
+            }
+        };
+
+        function playAudioOnce() {
+            const audio = document.getElementById('listening-audio');
+            
+            audio.play().then(() => {
+                // Save state to localStorage so a refresh won't let them play it again
+                localStorage.setItem('audioPlayed', 'true');
+                lockAudioButton();
+            }).catch(err => {
+                alert("Error playing audio. Make sure 'listening.mp3' is in the same folder.");
+            });
+
+            audio.onended = function() {
+                const btn = document.getElementById('test-btn');
+                const statusText = document.getElementById('status-text');
+                btn.textContent = "Finished";
+                statusText.textContent = "Playback complete. This audio cannot be replayed.";
+            };
+        }
+
+        function lockAudioButton() {
+            const btn = document.getElementById('test-btn');
+            const statusText = document.getElementById('status-text');
+            
+            btn.disabled = true;
+            btn.style.background = '#a0a0a0';
+            btn.style.cursor = 'not-allowed';
+            btn.textContent = "Audio Already Played";
+            statusText.textContent = "Security Notice: Audio was already played and cannot be replayed by refreshing.";
+        }
+
+        // Optional: Warn user if they try to refresh or close the page during the test
+        window.addEventListener('beforeunload', function (e) {
+            e.preventDefault();
+            e.returnValue = '';
+        });
+    </script>
+
+</body>
+</html>

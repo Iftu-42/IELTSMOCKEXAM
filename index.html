@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>IELTS Ethiopia - Mock Exam</title>
+  <style>
+    :root {
+      --primary-green: #0a7a3b;
+      --dark-green: #065026;
+      --accent-yellow: #f1ab00;
+      --bg-light: #f4f6f8;
+      --text-color: #333;
+      --white: #ffffff;
+      --danger-red: #d32f2f;
+      --disabled-gray: #a0a0a0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-light);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    /* Network Status Banner */
+    #network-banner {
+      background-color: #d32f2f;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: none;
+      position: sticky;
+      top: 0;
+      z-index: 2000;
+    }
+
+    /* Header */
+    header {
+      background-color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 5%;
+      border-bottom: 2px solid #e0e0e0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .brand-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-container img {
+      height: 38px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .brand-divider {
+      height: 22px;
+      width: 2px;
+      background-color: #ccc;
+    }
+
+    .brand-title {
+      color: var(--primary-green);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-timer {
+      font-weight: bold;
+      color: var(--danger-red);
+      background: #ffebee;
+      padding: 8px 16px;
+      border-radius: 20px;
+      display: none;
+      font-size: 0.95rem;
+    }
+
+    .view-page {
+      display: none;
+      flex: 1;
+      width: 100%;
+    }
+
+    .view-page.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Landing Page */
+    #landing-page {
+      background: radial-gradient(circle at center, #0d8c44 0%, var(--primary-green) 100%);
+      color: var(--white);
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .hero-title { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; margin-bottom: 5px; }
+    .hero-subtitle { color: var(--accent-yellow); font-size: clamp(1rem, 3vw, 1.2rem); font-weight: 700; letter-spacing: 1px; margin-bottom: 20px; text-transform: uppercase; }
+    .hero-description { max-width: 550px; line-height: 1.5; font-size: 0.95rem; margin-bottom: 35px; opacity: 0.9; }
+
+    .countdown-card {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 20px 25px;
+      margin-bottom: 35px;
+      backdrop-filter: blur(5px);
+      width: 100%;
+      max-width: 450px;
+    }
+
+    .timer-boxes { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .time-box { background: var(--white); color: var(--primary-green); padding: 10px 12px; border-radius: 10px; min-width: 60px; flex: 1; max-width: 80px; }
+    .time-box .number { font-size: 1.6rem; font-weight: 800; line-height: 1; }
+    .time-box .label { font-size: 0.65rem; color: #666; text-transform: uppercase; font-weight: 700; margin-top: 5px; }
+
+    .btn-action {
+      background-color: var(--white);
+      color: var(--primary-green);
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 14px 32px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background-color 0.2s ease;
+      min-height: 48px;
+    }
+
+    .btn-action:hover { background-color: #f0f0f0; }
+
+    .btn-form {
+      background-color: var(--primary-green);
+      color: var(--white);
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 12px 24px;
+      border-radius: 6px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 15px;
+      min-height: 44px;
+    }
+
+    /* Modal Instructions */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 15px;
+    }
+
+    .modal-card {
+      background: var(--white);
+      color: var(--text-color);
+      max-width: 500px;
+      width: 100%;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    /* Exam Page */
+    #exam-page { padding: 20px 5%; max-width: 1200px; margin: 0 auto; width: 100%; }
+
+    .section-nav { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 2px solid #ddd; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .nav-tab {
+      padding: 12px 20px;
+      background: #e0e0e0;
+      border: none;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      color: #555;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .nav-tab.active { background: var(--primary-green); color: var(--white); }
+    .nav-tab.disabled { background: #f0f0f0; color: #aaa; cursor: not-allowed; opacity: 0.7; }
+
+    .exam-section { display: none; background: var(--white); border-radius: 8px; padding: 25px; flex: 1; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .exam-section.active { display: block; }
+
+    /* Audio Box */
+    .audio-custom-box {
+      background: #f0f4f1;
+      padding: 15px 20px;
+      border-radius: 8px;
+      border: 1px solid #c8e6c9;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin: 15px 0 25px 0;
+      flex-wrap: wrap;
+    }
+
+    .audio-title-bold {
+      font-weight: 700;
+      color: var(--text-color);
+    }
+
+    .audio-action-btn {
+      background: var(--primary-green);
+      color: var(--white);
+      border: none;
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      min-height: 38px;
+      transition: background 0.2s;
+    }
+
+    .audio-action-btn:hover {
+      background: var(--dark-green);
+    }
+
+    .audio-action-btn:disabled {
+      background: var(--disabled-gray);
+      cursor: not-allowed;
+    }
+
+    .form-link-card {
+      background: #f9f9f9;
+      border: 1px dashed #ccc;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 25px;
+    }
+
+    .section-controls {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-nav {
+      background: var(--primary-green);
+      color: var(--white);
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      min-height: 44px;
+    }
+
+    .btn-nav:disabled { background: var(--disabled-gray); cursor: not-allowed; opacity: 0.6; }
+
+    /* Question Content */
+    .question-block {
+      background: #fafafa;
+      border: 1px solid #e5e5e5;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 25px;
+    }
+
+    .question-block h3 { color: var(--primary-green); margin-bottom: 8px; }
+    .question-block h4 { margin: 10px 0 5px 0; }
+    .question-block p.instruction { font-style: italic; color: #666; font-size: 0.9rem; margin-bottom: 12px; }
+
+    .passage-text {
+      background: #ffffff;
+      border-left: 4px solid var(--primary-green);
+      padding: 15px 20px;
+      margin-bottom: 20px;
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .passage-text p { margin-bottom: 12px; }
+    .question-block ul { margin-left: 20px; line-height: 1.8; }
+    .mcq-group { margin-bottom: 15px; }
+    .mcq-group p { font-weight: 600; margin-bottom: 5px; }
+    .mcq-options { margin-left: 15px; line-height: 1.6; }
+
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    table.q-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 500px;
+    }
+
+    table.q-table th, table.q-table td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+
+    table.q-table th { background-color: #f0f0f0; }
+    .blank-num { font-weight: bold; color: var(--primary-green); }
+
+    /* Graphical Flowchart Styling */
+    .flowchart-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0;
+      font-family: inherit;
+    }
+
+    .flow-step {
+      background: #ffffff;
+      border: 2px solid #0a7a3b;
+      border-radius: 8px;
+      padding: 14px 20px;
+      width: 100%;
+      max-width: 550px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .flow-step-title {
+      font-weight: bold;
+      color: #0a7a3b;
+      margin-bottom: 6px;
+      font-size: 1rem;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 4px;
+    }
+
+    .flow-step-content { font-size: 0.9rem; line-height: 1.6; color: #333; }
+    .flow-arrow { font-size: 1.5rem; color: #0a7a3b; font-weight: bold; }
+
+    .flow-split {
+      display: flex;
+      gap: 15px;
+      width: 100%;
+      max-width: 650px;
+    }
+
+    .flow-split .flow-step { flex: 1; }
+
+    .task-box {
+      background: #ffffff;
+      border: 1px solid #dcdcdc;
+      padding: 20px;
+      border-radius: 6px;
+      margin-bottom: 25px;
+    }
+
+    .task-box h4 {
+      color: #333;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+      border-bottom: 2px solid var(--primary-green);
+      display: inline-block;
+      padding-bottom: 3px;
+    }
+
+    /* Media Queries for Mobile Responsiveness */
+    @media (max-width: 768px) {
+      header { padding: 10px 4%; }
+      #exam-page { padding: 12px 3%; }
+      .exam-section { padding: 15px; }
+      .question-block { padding: 15px; }
+      .passage-text { padding: 12px 15px; }
+      .flow-split { flex-direction: column; }
+      .section-controls { flex-direction: column; }
+      .btn-nav { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Connection Status Banner -->
+  <div id="network-banner">⚠️ Network connection lost! Please check your internet connection. (Timer continues running)</div>
+
+  <!-- App Header -->
+  <header>
+    <div class="brand-container">
+      <img src="i.png" alt="IELTS Ethiopia Logo" onerror="this.style.display='none'" />
+      <div class="brand-divider"></div>
+      <span class="brand-title">Mock Exam 1st Round</span>
+    </div>
+    
+    <div class="header-controls">
+      <div id="section-timer" class="header-timer">Time Left: --:--</div>
+    </div>
+  </header>
+
+  <!-- Landing View -->
+  <div id="landing-page" class="view-page active">
+    <h1 class="hero-title">IELTS Ethiopia</h1>
+    <div class="hero-subtitle">Open Your Future.</div>
+    <p class="hero-description">Official Mock Platform. Test your skills under real exam timing.</p>
+
+    <div class="countdown-card">
+      <div class="timer-boxes">
+        <div class="time-box"><div class="number">00</div><div class="label">Days</div></div>
+        <div class="time-box"><div class="number">00</div><div class="label">Hours</div></div>
+        <div class="time-box"><div class="number">00</div><div class="label">Minutes</div></div>
+        <div class="time-box"><div class="number">00</div><div class="label">Seconds</div></div>
+      </div>
+    </div>
+
+    <button class="btn-action" onclick="showModal()">View Instructions & Start</button>
+  </div>
+
+  <!-- Instructions Modal -->
+  <div id="modal-instructions" class="modal-overlay">
+    <div class="modal-card">
+      <h2 style="color: var(--primary-green); margin-bottom: 10px;">Exam Instructions</h2>
+      <ul style="margin-left: 20px; line-height: 1.6; margin-bottom: 20px;">
+        <li>Listening Section: <strong>40 Minutes</strong></li>
+        <li>Reading Section: <strong>70 Minutes</strong></li>
+        <li>Writing Section: <strong>70 Minutes</strong></li>
+        <li><strong>Audio Rule:</strong> Listening audio plays <strong>once</strong> and cannot be paused or restarted.</li>
+        <li><strong>⚠️ DO NOT REFRESH:</strong> Do not refresh the page during the exam. If you refresh, you will lose your progress or encounter errors.</li>
+        <li><strong>Network Rule:</strong> The exam timer will continue running constantly even if your internet connection drops.</li>
+      </ul>
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button class="btn-action" style="background: #e0e0e0; color: #333;" onclick="hideModal()">Cancel</button>
+        <button class="btn-action" style="background: var(--primary-green); color: #fff;" onclick="startExam()">Agree & Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exam View -->
+  <div id="exam-page" class="view-page">
+    <div class="section-nav">
+      <button class="nav-tab active" id="tab-0" onclick="handleTabClick(0)">1. Listening</button>
+      <button class="nav-tab disabled" id="tab-1" onclick="handleTabClick(1)" disabled>2. Reading (Locked)</button>
+      <button class="nav-tab disabled" id="tab-2" onclick="handleTabClick(2)" disabled>3. Writing (Locked)</button>
+    </div>
+
+    <!-- 1. Listening Section -->
+    <div class="exam-section active" id="section-0">
+      <h2>Listening Section (40 Mins)</h2>
+
+      <!-- Audio Box -->
+      <div class="audio-custom-box">
+        <span class="audio-title-bold">Listening Audio</span>
+        <button id="start-audio-btn" class="audio-action-btn" onclick="playAudioOnce()">Click to Start Listening</button>
+        <span id="audio-status-text" style="font-size: 0.9rem; color: #555;">(Plays once and cannot be paused or replayed)</span>
+        <audio id="listening-audio" src="listening.mp3" style="display: none;"></audio>
+      </div>
+
+      <!-- QUESTIONS CONTAINER -->
+      <div id="listening-questions">
+        
+        <!-- SECTION 1 -->
+        <div class="question-block">
+          <h3>SECTION 1 (Questions 1–10)</h3>
+          <p class="instruction">Complete the notes below. Write <strong>ONE WORD AND/OR A NUMBER</strong> for each answer.</p>
+          
+          <h4 style="text-align: center; margin-bottom: 10px;">Events during Kenton Festival</h4>
+          <p><strong>Example:</strong> Start date: 16th May</p>
+          <br>
+          <p><strong>Opening ceremony (first day)</strong></p>
+          <ul>
+            <li>In town centre, starting at <span class="blank-num">(1)</span> _________</li>
+            <li>The mayor will make a speech</li>
+            <li>A <span class="blank-num">(2)</span> _________ will perform</li>
+            <li>Performance of a <span class="blank-num">(3)</span> _________ about Helen Tungate (a <span class="blank-num">(4)</span> _________)</li>
+            <li>Evening fireworks display situated across the <span class="blank-num">(5)</span> _________</li>
+          </ul>
+          <br>
+          <p><strong>Other events</strong></p>
+          <ul>
+            <li>Videos about relationships that children have with their <span class="blank-num">(6)</span> _________</li>
+            <li>Venue: <span class="blank-num">(7)</span> _________ House</li>
+            <li>Performance of <span class="blank-num">(8)</span> _________ dances</li>
+            <li>Venue: the <span class="blank-num">(9)</span> _________ market in the town centre</li>
+            <li>Time: 2 and 5 pm every day except 1st day of festival</li>
+            <li>Several professional concerts and one by children</li>
+            <li>Venue: library</li>
+            <li>Time: 6.30 pm on the 18th</li>
+            <li>Tickets available online from festival box office and from shops which have the festival <span class="blank-num">(10)</span> _________ in their windows</li>
+          </ul>
+        </div>
+
+        <!-- SECTION 2 -->
+        <div class="question-block">
+          <h3>SECTION 2 (Questions 11–20)</h3>
+          
+          <h4>Questions 11–15</h4>
+          <p class="instruction">Choose the correct letter, <strong>A, B or C</strong>.</p>
+          
+          <h4 style="text-align: center; margin-bottom: 15px;">Theatre trip to Munich</h4>
+
+          <div class="mcq-group">
+            <p>11. When the group meet at the airport they will have</p>
+            <div class="mcq-options">A. breakfast.<br>B. coffee.<br>C. lunch.</div>
+          </div>
+          <div class="mcq-group">
+            <p>12. The group will be met at Munich Airport by</p>
+            <div class="mcq-options">A. an employee at the National Theatre<br>B. a theatre manager<br>C. a tour operator</div>
+          </div>
+          <div class="mcq-group">
+            <p>13. How much will they pay per night for a double room at the hotel?</p>
+            <div class="mcq-options">A. 110 euros<br>B. 120 euros<br>C. 150 euros</div>
+          </div>
+          <div class="mcq-group">
+            <p>14. What type of restaurant will they go to on Tuesday evening?</p>
+            <div class="mcq-options">A. an Italian restaurant<br>B. a Lebanese restaurant<br>C. a typical restaurant of the region</div>
+          </div>
+          <div class="mcq-group">
+            <p>15. Who will they meet on Wednesday afternoon?</p>
+            <div class="mcq-options">A. an actor<br>B. a playwright<br>C. a theatre director</div>
+          </div>
+
+          <br>
+          <h4>Questions 16–20</h4>
+          <p class="instruction">What does the man say about the play on each of the following days? Choose <strong>FIVE</strong> answers from the box and write the correct letter, <strong>A–G</strong>, next to Questions 16–20.</p>
+          
+          <div style="border: 1px solid #ccc; padding: 12px; background: #fff; margin-bottom: 15px;">
+            <strong>Comments:</strong><br>
+            A. The playwright will be present<br>
+            B. The play was written to celebrate an anniversary<br>
+            C. The play will be performed inside a historic building<br>
+            D. The play will be accompanied by live music<br>
+            E. The play will be performed outdoors<br>
+            F. The play will be performed for the first time<br>
+            G. The performance will be attended by officials from the town
+          </div>
+
+          <p><strong>Days:</strong></p>
+          <p>16. Wednesday: _____</p>
+          <p>17. Thursday: _____</p>
+          <p>18. Friday: _____</p>
+          <p>19. Saturday: _____</p>
+          <p>20. Monday: _____</p>
+        </div>
+
+        <!-- SECTION 3 -->
+        <div class="question-block">
+          <h3>SECTION 3 (Questions 21–30)</h3>
+          
+          <h4>Questions 21–24</h4>
+          <p class="instruction">Complete the table below. Write <strong>ONE WORD ONLY</strong> for each answer.</p>
+          
+          <h4 style="text-align: center; margin-bottom: 10px;">Presentation on film adaptations of Shakespeare's plays</h4>
+
+          <div class="table-responsive">
+            <table class="q-table">
+              <thead>
+                <tr>
+                  <th>Stages of presentation</th>
+                  <th>Work still to be done</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Introduce Giannetti's book containing a <span class="blank-num">(21)</span> _________ of adaptations</td>
+                  <td>Organise notes</td>
+                </tr>
+                <tr>
+                  <td>Ask class to suggest the <span class="blank-num">(22)</span> _________ adaptations</td>
+                  <td>No further work needed</td>
+                </tr>
+                <tr>
+                  <td>Present Rachel Malchow's ideas</td>
+                  <td>Prepare some <span class="blank-num">(23)</span> _________</td>
+                </tr>
+                <tr>
+                  <td>Discuss relationship between adaptations and <span class="blank-num">(24)</span> _________ at the time of making the film</td>
+                  <td>No further work needed</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <br>
+          <h4>Questions 25–30</h4>
+          <p class="instruction">What do the speakers say about each of the following films? Choose <strong>SIX</strong> answers from the box and write the correct letter, <strong>A–G</strong>, next to questions 25–30.</p>
+
+          <div style="border: 1px solid #ccc; padding: 12px; background: #fff; margin-bottom: 15px;">
+            <strong>Comments:</strong><br>
+            A. clearly shows the historical period<br>
+            B. contains only parts of the play<br>
+            C. is too similar to another kind of film<br>
+            D. turned out to be unpopular with audiences<br>
+            E. presents the play in a different period from the original<br>
+            F. sets the original in a different country<br>
+            G. incorporates a variety of art forms
+          </div>
+
+          <p><strong>Films:</strong></p>
+          <p>25. Ran: _____</p>
+          <p>26. Much Ado About Nothing: _____</p>
+          <p>27. Romeo & Juliet: _____</p>
+          <p>28. Hamlet: _____</p>
+          <p>29. Prospero's Books: _____</p>
+          <p>30. Looking for Richard: _____</p>
+        </div>
+
+        <!-- SECTION 4 -->
+        <div class="question-block">
+          <h3>SECTION 4 (Questions 31–40)</h3>
+          <p class="instruction">Complete the notes below. Write <strong>ONE WORD ONLY</strong> for each answer.</p>
+
+          <h4 style="text-align: center; margin-bottom: 10px;">Noise in Cities</h4>
+          <p>Past research focused on noise level (measured in decibels) and people's responses.</p>
+          <br>
+          <p><strong>Noise 'maps'</strong></p>
+          <ul>
+            <li>show that the highest noise levels are usually found on roads</li>
+            <li>do not show other sources of noise, e.g. when windows are open or people's neighbours are in their <span class="blank-num">(31)</span> _________</li>
+            <li>ignore variations in people's perceptions of noise</li>
+            <li>have made people realize that the noise is a <span class="blank-num">(32)</span> _________ issue that must be dealt with</li>
+          </ul>
+          <br>
+          <p><strong>Problems caused by noise</strong></p>
+          <ul>
+            <li>sleep disturbance</li>
+            <li>increase in amount of stress</li>
+            <li>effect on the <span class="blank-num">(33)</span> _________ of schoolchildren</li>
+          </ul>
+          <br>
+          <p><strong>Different types of noise</strong></p>
+          <ul>
+            <li>Some noises can be considered pleasant e.g. the sound of a <span class="blank-num">(34)</span> _________ in a town</li>
+            <li>To investigate this, researchers may use methods from <span class="blank-num">(35)</span> _________ sciences e.g. questionnaires</li>
+          </ul>
+          <br>
+          <p><strong>What people want</strong></p>
+          <ul>
+            <li>Plenty of activity in urban environments which are <span class="blank-num">(36)</span> _________ , but also allow people to relax</li>
+            <li>But architects and town planners:
+              <ul>
+                <li>do not get much <span class="blank-num">(37)</span> _________ in acoustics</li>
+                <li>regard sound as the responsibility of engineers</li>
+              </ul>
+            </li>
+          </ul>
+          <br>
+          <p><strong>Understanding sound as an art form</strong></p>
+          <p>We need to know:</p>
+          <ul>
+            <li>how sound relates to <span class="blank-num">(38)</span> _________</li>
+            <li>what can be learnt from psychology about the effects of sound</li>
+            <li>whether physics can help us understand the <span class="blank-num">(39)</span> _________ of sound</li>
+          </ul>
+          <br>
+          <p><strong>Virtual reality programs</strong></p>
+          <ul>
+            <li>advantage: predict the effect of buildings</li>
+            <li>current disadvantage: they are <span class="blank-num">(40)</span> _________</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- GOOGLE FORM EXTERNAL LINK -->
+      <div class="form-link-card">
+        <h3>Submit Listening & Reading Answers</h3>
+        <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">Click the button below to open your answer form in a new tab.</p>
+        <a href="https://forms.gle/5xpBERWb46zysw9bA" target="_blank" class="btn-form">
+          Open Listening & Reading Form
+        </a>
+      </div>
+
+      <div class="section-controls">
+        <button class="btn-nav" disabled>Previous</button>
+        <button class="btn-nav" id="next-btn-0" disabled onclick="advanceToNextSection(1)">Next Section (Reading) [Locked until timer ends]</button>
+      </div>
+    </div>
+
+    <!-- 2. Reading Section -->
+    <div class="exam-section" id="section-1">
+      <h2>Reading Section (70 Mins)</h2>
+
+      <div id="reading-passages-and-questions">
+
+        <!-- READING PASSAGE 1 -->
+        <div class="question-block">
+          <h3>READING PASSAGE 1</h3>
+          <p class="instruction">You should spend about 20 minutes on Questions 1–15, which are based on Reading Passage 1 below.</p>
+          
+          <h3 style="text-align: center; margin: 15px 0;">Agricultural Vulnerabilities in Developing Nations</h3>
+
+          <div class="passage-text">
+            <p><strong>A.</strong> Agriculture remains the economic backbone of most developing nations, providing employment for up to 70 percent of the labor force and serving as the primary source of food security. However, smallholder farmers in these regions face an unprecedented array of systemic risks. Unlike their counterparts in industrialised countries, who are often protected by state subsidies, comprehensive insurance schemes, and advanced technological infrastructure, farmers in lower-income countries operate on the fringe of economic survival. A single extreme weather event, market fluctuation, or pest infestation can plunge entire communities into severe financial distress and chronic hunger.</p>
+            <p><strong>B.</strong> Chief among these challenges is climate volatility. Rising global temperatures have disrupted historical rainfall patterns, leading to prolonged droughts punctuated by sudden, catastrophic flooding. Because the majority of smallholders rely exclusively on rain-fed agriculture rather than artificial irrigation systems, their crop yields are directly tied to increasingly unpredictable weather cycles. In Sub-Saharan Africa and South Asia, for instance, a two-week delay in seasonal rains can reduce grain yields by up to 30 percent. Furthermore, warmer microclimates have accelerated the expansion of agricultural pests, such as the fall armyworm and desert locusts, which sweep across regions and decimate harvests overnight.</p>
+            <p><strong>C.</strong> Beyond environmental hazards, rural producers are severely constrained by economic and structural hurdles. Price volatility in global commodity markets frequently undermines agricultural viability. Smallholders rarely possess up-to-date market information, forcing them to sell their produce to intermediary traders at below-market rates immediately following harvest—a period when local supply is highest and prices are lowest. This situation is compounded by a lack of adequate storage facilities. Without cold-chain storage or hermetic silos, perishable crops like fruits and vegetables rot rapidly, while grain stores are destroyed by mold and rodents, resulting in post-harvest losses exceeding 40 percent in some regions.</p>
+            <p><strong>D.</strong> Access to capital presents another formidable barrier. Traditional banking institutions generally view small-scale agriculture as a high-risk, low-return endeavor, leading to exorbitant interest rates or outright refusal to extend credit. Without formal loans, farmers cannot invest in high-yield seed varieties, synthetic fertilizers, or modern mechanisation. Consequently, agricultural productivity in developing regions has lagged behind global averages. While agricultural technology has transformed yields in North America and Europe, traditional farming methods remain dominant across much of the Global South.</p>
+            <p><strong>E.</strong> To mitigate these compounding threats, development agencies and governments are championing multi-pronged strategies. Index-based micro-insurance, which pays out automatically when environmental triggers (such as rainfall levels recorded by satellite) are met, is gaining traction as an affordable safety net. Concurrently, mobile technology is bridging the information gap by delivering real-time weather alerts and market prices directly to farmers' phones. Enhancing physical infrastructure—specifically investment in localized solar-powered storage units and climate-resilient road networks—is also critical. Without such systemic interventions, the agricultural sector in developing nations will remain acutely vulnerable to ongoing global environmental and economic shocks.</p>
+          </div>
+
+          <h4>Questions 1–5</h4>
+          <p class="instruction">Do the following statements agree with the information given in Reading Passage 1?<br>In boxes 1–5 on your answer sheet, write:</p>
+          <ul>
+            <li><strong>TRUE</strong> if the statement agrees with the information</li>
+            <li><strong>FALSE</strong> if the statement contradicts the information</li>
+            <li><strong>NOT GIVEN</strong> if there is no information on this</li>
+          </ul>
+          <br>
+          <p>1. Industrialised nations typically offer their farmers greater financial safeguards than developing nations do.</p>
+          <p>2. The majority of smallholder farmers in developing nations use modern artificial irrigation systems.</p>
+          <p>3. Desert locust infestations have caused more financial damage in South Asia than in Sub-Saharan Africa.</p>
+          <p>4. Lack of proper storage facilities contributes significantly to crop loss after harvest.</p>
+          <p>5. Traditional banks are increasingly willing to offer low-interest loans to rural smallholders.</p>
+
+          <br>
+          <h4>Questions 6–10</h4>
+          <p class="instruction">Choose the correct letter, <strong>A, B, C, or D</strong>.</p>
+
+          <div class="mcq-group">
+            <p>6. According to Paragraph A, smallholder farmers in developing nations are particularly vulnerable because</p>
+            <div class="mcq-options">
+              A) they rely solely on government subsidies for income.<br>
+              B) they lack the institutional safety nets available in wealthier countries.<br>
+              C) they prefer traditional farming techniques over modern methods.<br>
+              D) they produce food primarily for export markets.
+            </div>
+          </div>
+
+          <div class="mcq-group">
+            <p>7. What happens when farmers lack real-time market information at harvest time?</p>
+            <div class="mcq-options">
+              A) They are forced to store their crops until prices increase.<br>
+              B) They export their produce directly to global distributors.<br>
+              C) They accept reduced prices from middleman traders.<br>
+              D) They switch to growing non-perishable crops.
+            </div>
+          </div>
+
+          <div class="mcq-group">
+            <p>8. Post-harvest crop losses in developing regions can reach over 40 percent mainly due to</p>
+            <div class="mcq-options">
+              A) excessive transport delays to international ports.<br>
+              B) insufficient and improper crop storage options.<br>
+              C) high tariffs imposed by foreign governments.<br>
+              D) refusal of local consumers to buy damaged produce.
+            </div>
+          </div>
+
+          <div class="mcq-group">
+            <p>9. Why do commercial banks hesitate to grant loans to small-scale farmers?</p>
+            <div class="mcq-options">
+              A) Smallholders lack interest in expanding their crop yields.<br>
+              B) National regulations restrict loans to the agricultural sector.<br>
+              C) Small-scale farming is perceived as high-risk with low profit potential.<br>
+              D) Smallholders generally possess sufficient personal capital.
+            </div>
+          </div>
+
+          <div class="mcq-group">
+            <p>10. Index-based micro-insurance differs from standard insurance because payouts are based on</p>
+            <div class="mcq-options">
+              A) physical inspection of destroyed crops by bank agents.<br>
+              B) predefined data metrics such as satellite rainfall measurements.<br>
+              C) total financial losses reported by local government officials.<br>
+              D) market price shifts recorded at local urban centers.
+            </div>
+          </div>
+
+          <br>
+          <h4>Questions 11–15</h4>
+          <p class="instruction">Complete the table below. Choose <strong>NO MORE THAN TWO WORDS</strong> from the passage for each answer.</p>
+
+          <div class="table-responsive">
+            <table class="q-table">
+              <thead>
+                <tr>
+                  <th>Risk Category</th>
+                  <th>Main Causes / Impact</th>
+                  <th>Potential Solutions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Environmental</td>
+                  <td>Unpredictable weather, delays in rains, and pest expansion (e.g., fall armyworm).</td>
+                  <td>Development of index-based <span class="blank-num">(11)</span> _________ and mobile weather alerts.</td>
+                </tr>
+                <tr>
+                  <td>Commercial</td>
+                  <td>Selling crops immediately post-harvest leads to <span class="blank-num">(12)</span> _________ prices.</td>
+                  <td>Providing real-time <span class="blank-num">(13)</span> _________ via mobile phones.</td>
+                </tr>
+                <tr>
+                  <td>Infrastructure</td>
+                  <td>Spoilage caused by mold, rodents, and lack of cold chains.</td>
+                  <td>Installation of solar-powered <span class="blank-num">(14)</span> _________ facilities.</td>
+                </tr>
+                <tr>
+                  <td>Financial</td>
+                  <td>High interest rates or refusal of loans by <span class="blank-num">(15)</span> _________.</td>
+                  <td>Expanding accessible micro-credit and state-backed financial aid.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- READING PASSAGE 2 -->
+        <div class="question-block">
+          <h3>READING PASSAGE 2</h3>
+          <p class="instruction">You should spend about 20 minutes on Questions 16–27, which are based on Reading Passage 2 below.</p>
+
+          <h3 style="text-align: center; margin: 15px 0;">The Dawn of Civilization in the Fertile Crescent</h3>
+
+          <div class="passage-text">
+            <p><strong>Paragraph A:</strong> The region historically known as the Fertile Crescent, stretching from the Levant through modern-day Iraq to the Persian Gulf, is widely recognized as the birthplace of urban human civilization. Between 10,000 BCE and 3,000 BCE, nomadic hunter-gatherer communities gradually transitioned into sedentary agricultural societies. This fundamental transformation, known as the Neolithic Revolution, was facilitated by favorable post-glacial climatic conditions, abundant wild grains, and native fauna suitable for domestication. As food production stabilized, human settlements grew exponentially in size and social complexity.</p>
+            <p><strong>Paragraph B:</strong> Key to this cultural evolution was the management of water resources. In lower Mesopotamia, situated between the Tigris and Euphrates rivers, rainfall was scant and erratic. However, seasonal river flooding offered a steady supply of nutrient-rich silt. To capitalize on this, early Mesopotamian communities engineered intricate canal systems, dikes, and reservoirs. Constructing and maintaining these large-scale hydraulic works required organized collective labor, which in turn spurred the development of centralized political administration and hierarchical governance structures.</p>
+            <p><strong>Paragraph C:</strong> By 3500 BCE, the southern region of Sumer witnessed the emergence of the world’s first true city-states, including Uruk, Ur, and Eridu. Uruk, at its peak, housed upwards of 50,000 residents—an unprecedented human density made possible by advanced agricultural yields and specialized division of labor. No longer was every citizen required to produce food; instead, artisan classes, metalworkers, priests, and bureaucrats emerged. Monumental architecture, most notably towering stepped temples known as ziggurats, dominated the urban landscape, serving as both spiritual centers and administrative hubs for grain redistribution.</p>
+            <p><strong>Paragraph D:</strong> The management of complex urban economies necessitated a system for record-keeping. Around 3200 BCE, Sumerian administrators devised cuneiform, a wedge-shaped script pressed into wet clay tablets using reed styluses. Initially utilized solely for accounting—tracking livestock, grain inventories, and land transactions—cuneiform evolved over centuries into a sophisticated writing system capable of recording legal codes, diplomatic correspondence, and literary masterpieces such as the Epic of Gilgamesh. Writing transformed knowledge from ephemeral spoken words into permanent, transferable historical records.</p>
+            <p><strong>Paragraph E:</strong> Long-distance trade routes further accelerated Middle Eastern civilisational progress. Lacking indigenous supplies of timber, stone, and precious metals, Mesopotamian city-states established extensive trade networks spanning Anatolia, the Iranian Plateau, the Indus Valley, and Egypt. Scribes recorded export commodities such as woven textiles, sesame oil, and crafted barley products exchanged for lapis lazuli, copper, and cedarwood. These commercial exchanges facilitated not only material wealth but also the cross-cultural dissemination of technological innovations, architectural concepts, and religious traditions.</p>
+            <p><strong>Paragraph F:</strong> Despite their extraordinary achievements, these early civilizations were intrinsically fragile. Environmental degradation, particularly soil salinization resulting from over-irrigation in hot climates, gradually eroded crop yields over generations. Concurrently, competition over fertile land and water rights sparked recurring military conflicts between neighboring city-states. External invasions by pastoral nomadic groups ultimately brought about the collapse of dominant dynasties, though the technological, administrative, and cultural foundations established in the Fertile Crescent survived to shape subsequent Mediterranean and global civilizations.</p>
+          </div>
+
+          <h4>Questions 16–21</h4>
+          <p class="instruction">Reading Passage 2 has six paragraphs, A–F. Choose the correct heading for each paragraph from the list of headings below.</p>
+
+          <div style="border: 1px solid #ccc; padding: 12px; background: #fff; margin-bottom: 15px;">
+            <strong>List of Headings:</strong><br>
+            i. The economic imperative for administrative writing<br>
+            ii. Environmental strain and the decline of early states<br>
+            iii. The transition from foraging to permanent settlements<br>
+            iv. Trade networks and cultural cross-pollination<br>
+            v. Religious beliefs and burial customs of Sumer<br>
+            vi. Urban expansion and social specialization<br>
+            vii. Water management as a catalyst for political organization<br>
+            viii. The military dominance of nomadic invaders
+          </div>
+
+          <p>16. Paragraph A: _____</p>
+          <p>17. Paragraph B: _____</p>
+          <p>18. Paragraph C: _____</p>
+          <p>19. Paragraph D: _____</p>
+          <p>20. Paragraph E: _____</p>
+          <p>21. Paragraph F: _____</p>
+
+          <br>
+          <h4>Questions 22–27</h4>
+          <p class="instruction">Do the following statements agree with the views/claims expressed in Reading Passage 2?<br>In boxes 22–27 on your answer sheet, write:</p>
+          <ul>
+            <li><strong>YES</strong> if the statement agrees with the views/claims in the passage</li>
+            <li><strong>NO</strong> if the statement contradicts the views/claims in the passage</li>
+            <li><strong>NOT GIVEN</strong> if it is impossible to say what the passage thinks about this</li>
+          </ul>
+          <br>
+          <p>22. The Neolithic Revolution occurred rapidly due to severe climate changes in the Levant.</p>
+          <p>23. Building extensive irrigation systems forced Mesopotamian societies to create centralized governance.</p>
+          <p>24. Uruk was the only city-state in southern Sumer that constructed ziggurats.</p>
+          <p>25. Cuneiform was originally developed for creative literature rather than economic tracking.</p>
+          <p>26. Mesopotamian city-states had to import basic raw materials like wood and metal due to local scarcity.</p>
+          <p>27. Soil salinization caused by continuous irrigation played a role in reducing agricultural output.</p>
+        </div>
+
+        <!-- READING PASSAGE 3 -->
+        <div class="question-block">
+          <h3>READING PASSAGE 3</h3>
+          <p class="instruction">You should spend about 20 minutes on Questions 28–40, which are based on Reading Passage 3 below.</p>
+
+          <h3 style="text-align: center; margin: 15px 0;">Industrial Reverse Osmosis Desalination</h3>
+
+          <div class="passage-text">
+            <p><strong>A.</strong> As fresh water scarcity escalates globally, industrial-scale desalination has emerged as a critical technological solution for coastal populations. Among existing technologies, Sea Water Reverse Osmosis (SWRO) accounts for over 60 percent of world operational capacity due to its higher energy efficiency compared to thermal distillation methods. The SWRO process transforms saline ocean water into potable water through a continuous multi-stage treatment sequence designed to protect sensitive filtration media and ensure strict quality compliance.</p>
+            <p><strong>B.</strong> The primary phase of SWRO begins at the ocean intake structure, where raw seawater is drawn into the plant through submerged pipes positioned well off the coastline. To prevent marine organisms and large debris from entering the system, coarse mechanical screens are installed at the intake point. The water then enters the pre-treatment module. Here, chemical coagulants such as ferric chloride are added to aggregate fine suspended particles. The water passes through dual-media sand filters and microfiltration membranes, removing micro-solids, algae, and organic compounds that would otherwise cause biofouling on downstream equipment.</p>
+            <p><strong>C.</strong> Following particulate filtration, the water undergoes chemical conditioning. Dechlorination agents, typically sodium bisulfite, are injected to neutralize residual chlorine, which degrades polymer-based reverse osmosis membranes. Additionally, antiscalants are added to prevent dissolved mineral salts from precipitating onto membrane surfaces. The treated feed water is then passed through security cartridge filters (typically rated at 5 microns) as a final protective barrier against microscopic particulates.</p>
+            <p><strong>D.</strong> At the heart of the SWRO plant is the high-pressure pumping station and membrane assembly. Standard osmotic pressure naturally drives fresh water toward saline solutions across a semi-permeable membrane. To reverse this natural flow, high-pressure pumps apply mechanical pressure—ranging between 55 to 80 bar—exceeding the natural osmotic pressure of seawater. Under this intense force, water molecules are driven through dense polyamide thin-film composite membranes, leaving behind dissolved salts, heavy metals, and bacteria. The result is two distinct streams: purified permeate (fresh water) and highly concentrated brine (reject water).</p>
+            <p><strong>E.</strong> Because driving high-pressure pumps consumes substantial electrical power, modern SWRO facilities incorporate Energy Recovery Devices (ERDs). ERDs capture the hydraulic energy contained within the pressurized brine waste stream and transfer it directly to incoming feed water, reducing total facility power consumption by up to 60 percent.</p>
+            <p><strong>F.</strong> The final stage of the process is post-treatment and remineralization. The fresh permeate emerging from reverse osmosis is slightly acidic and low in mineral content, rendering it corrosive to municipal piping and unsuitable for direct drinking. To rectify this, the water is passed through limestone bed contactors or injected with calcium hydroxide (lime) and carbon dioxide to restore pH balance and add essential minerals like calcium and carbonate. Finally, small doses of chlorine are added for disinfection prior to distribution into the municipal supply grid, while the concentrated brine is diluted and discharged back into the ocean via engineered diffusers.</p>
+          </div>
+
+          <h4>Questions 28–33</h4>
+          <p class="instruction">Label the diagram below. Choose <strong>NO MORE THAN TWO WORDS</strong> from the passage for each answer.</p>
+
+          <h4 style="text-align: center; margin-bottom: 15px;">The SWRO Desalination Process Flowchart</h4>
+          
+          <!-- GRAPHICAL PROCESS FLOWCHART -->
+          <div class="flowchart-container">
+            
+            <div class="flow-step">
+              <div class="flow-step-title">[ Ocean Intake Structure ]</div>
+              <div class="flow-step-content">• Coarse mechanical screens remove large debris</div>
+            </div>
+
+            <div class="flow-arrow">▼</div>
+
+            <div class="flow-step">
+              <div class="flow-step-title">[ Pre-Treatment Phase ]</div>
+              <div class="flow-step-content">
+                • Addition of chemical coagulants<br>
+                • Filtration using dual-media sand filters & microfiltration
+              </div>
+            </div>
+
+            <div class="flow-arrow">▼</div>
+
+            <div class="flow-step">
+              <div class="flow-step-title">[ Chemical Conditioning ]</div>
+              <div class="flow-step-content">
+                • Injection of sodium bisulfite for <strong>(28)</strong> <span class="blank-num">____________________</span><br>
+                • Addition of <strong>(29)</strong> <span class="blank-num">____________________</span> to prevent mineral precipitation<br>
+                • Final particle trapping via <strong>(30)</strong> <span class="blank-num">____________________</span> filters
+              </div>
+            </div>
+
+            <div class="flow-arrow">▼</div>
+
+            <div class="flow-step">
+              <div class="flow-step-title">[ High-Pressure RO Assembly ]</div>
+              <div class="flow-step-content">
+                • High-pressure pumps generate 55–80 bar pressure<br>
+                • Force water through semi-permeable <strong>(31)</strong> <span class="blank-num">____________________</span> membranes
+              </div>
+            </div>
+
+            <div class="flow-arrow">▼</div>
+
+            <div class="flow-split">
+              <div class="flow-step">
+                <div class="flow-step-title">[ Concentrated Brine Stream ]</div>
+                <div class="flow-step-content">
+                  • Energy recovery via <strong>(32)</strong> <span class="blank-num">____________________</span>
+                </div>
+              </div>
+              <div class="flow-step">
+                <div class="flow-step-title">[ Purified Permeate Stream ]</div>
+                <div class="flow-step-content">
+                  • Moves to post-treatment
+                </div>
+              </div>
+            </div>
+
+            <div class="flow-arrow">▼</div>
+
+            <div class="flow-step">
+              <div class="flow-step-title">[ Post-Treatment Phase ]</div>
+              <div class="flow-step-content">
+                • Injection of lime/CO2 & <strong>(33)</strong> <span class="blank-num">____________________</span> for health safety
+              </div>
+            </div>
+
+            <div class="flow-arrow">▼</div>
+
+            <div class="flow-step">
+              <div class="flow-step-title">[ Municipal Supply Grid ]</div>
+              <div class="flow-step-content">• Ready for consumer distribution</div>
+            </div>
+
+          </div>
+
+          <br>
+          <h4>Questions 34–40</h4>
+          <p class="instruction">Answer the questions below. Choose <strong>NO MORE THAN THREE WORDS AND/OR A NUMBER</strong> from the passage for each answer.</p>
+
+          <p>34. What proportion of global desalination capacity is supplied by SWRO?</p>
+          <p>35. What substance is added during pre-treatment to aggregate fine suspended particles?</p>
+          <p>36. What harmful condition in RO membranes is prevented by removing organic compounds and algae?</p>
+          <p>37. What type of pressure must high-pressure pumps overcome to reverse the natural flow of water?</p>
+          <p>38. What structural material forms the thin-film membranes used in reverse osmosis?</p>
+          <p>39. By what maximum percentage can Energy Recovery Devices cut total plant electricity consumption?</p>
+          <p>40. What process adjusts the water's pH balance and mineral content before municipal distribution?</p>
+        </div>
+
+      </div>
+
+      <div class="form-link-card">
+        <h3>Submit Listening & Reading Answers</h3>
+        <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">Click the button below to open your answer form in a new tab.</p>
+        <a href="https://forms.gle/5xpBERWb46zysw9bA" target="_blank" class="btn-form">
+          Open Listening & Reading Form
+        </a>
+      </div>
+
+      <div class="section-controls">
+        <button class="btn-nav" onclick="switchSection(0)">Previous Section (Listening)</button>
+        <button class="btn-nav" id="next-btn-1" disabled onclick="advanceToNextSection(2)">Next Section (Writing) [Locked until timer ends]</button>
+      </div>
+    </div>
+
+    <!-- 3. Writing Section -->
+    <div class="exam-section" id="section-2">
+      <h2>Writing Section (70 Mins)</h2>
+
+      <div style="margin-top: 20px;">
+        
+        <!-- WRITING TASK 1 -->
+        <div class="task-box">
+          <h3>WRITING TASK 1</h3>
+          <p class="instruction">You should spend about 20 minutes on this task.</p>
+
+          <div style="margin: 15px 0; line-height: 1.6;">
+            <p><strong>The chart below shows how frequently people in the USA ate in fast food restaurants between 2003 and 2013.</strong></p>
+            <p style="margin-top: 10px;">Summarise the information by selecting and reporting the main features, and make comparisons where relevant.</p>
+          </div>
+
+          <img src="writing.png" alt="Writing Prompt Graph" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 6px; margin: 15px 0;" onerror="this.style.display='none';" />
+
+          <p><strong>Write at least 150 words.</strong></p>
+        </div>
+
+        <!-- WRITING TASK 2 -->
+        <div class="task-box">
+          <h3>WRITING TASK 2</h3>
+          <p class="instruction">You should spend about 40 minutes on this task.</p>
+
+          <div style="margin: 15px 0; line-height: 1.6;">
+            <p><strong>Write about the following topic:</strong></p>
+            <blockquote style="margin: 15px 0; padding: 12px 18px; background: #f0f4f1; border-left: 4px solid var(--primary-green); font-style: italic;">
+              In a number of countries, some people think it is necessary to spend large sums of money on constructing new railway lines for very fast trains between cities. others believe the money should be spent on improving existing public transport.
+            </blockquote>
+            <p><strong>Discuss both these views and give your own opinion.</strong></p>
+            <p style="margin-top: 10px;">Give reasons for your answer and include any relevant examples from your own knowledge or experience.</p>
+          </div>
+
+          <p><strong>Write at least 250 words.</strong></p>
+        </div>
+
+      </div>
+
+      <div class="form-link-card">
+        <h3>Submit Writing Answers</h3>
+        <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">Click the button below to open your writing answer form in a new tab.</p>
+        <a href="https://forms.gle/hBdxsnXndngQh9f89" target="_blank" class="btn-form">
+          Open Writing Form
+        </a>
+      </div>
+
+      <div class="section-controls">
+        <button class="btn-nav" onclick="switchSection(1)">Previous Section (Reading)</button>
+        <button class="btn-nav" id="next-btn-2" style="background: var(--dark-green);" disabled onclick="submitExam()">Finish Exam</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentSectionIndex = 0;
+    let timerInterval = null;
+    let timeRemaining = 0;
+
+    // Timers in seconds: Listening (40 min), Reading (70 min), Writing (70 min)
+    const sectionDurations = [40 * 60, 70 * 60, 70 * 60];
+    const sectionNames = ["1. Listening", "2. Reading", "3. Writing"];
+    
+    // Lock states for sections
+    const sectionUnlocked = [true, false, false];
+
+    // Monitor Network Connection Status (Banner alerts only, timer DOES NOT pause)
+    window.addEventListener('online', () => {
+      document.getElementById('network-banner').style.display = 'none';
+    });
+    window.addEventListener('offline', () => {
+      if (localStorage.getItem('examStarted') === 'true') {
+        document.getElementById('network-banner').style.display = 'block';
+      }
+    });
+
+    // Check localStorage on page load to restore exam session and lock audio if needed
+    window.addEventListener('DOMContentLoaded', () => {
+      const examStarted = localStorage.getItem('examStarted');
+      const audioState = localStorage.getItem('audioState');
+
+      if (examStarted === 'true') {
+        document.getElementById('landing-page').classList.remove('active');
+        document.getElementById('exam-page').classList.add('active');
+        document.getElementById('section-timer').style.display = 'block';
+        
+        const savedSection = parseInt(localStorage.getItem('currentSectionIndex') || '0', 10);
+        currentSectionIndex = savedSection;
+        
+        for (let i = 0; i <= currentSectionIndex; i++) {
+          sectionUnlocked[i] = true;
+        }
+
+        updateNavTabs();
+        
+        const savedTime = localStorage.getItem('timeRemaining');
+        const initialTime = savedTime ? parseInt(savedTime, 10) : sectionDurations[currentSectionIndex];
+
+        document.querySelectorAll('.nav-tab').forEach((tab, i) => {
+          tab.classList.toggle('active', i === currentSectionIndex);
+        });
+
+        document.querySelectorAll('.exam-section').forEach((sec, i) => {
+          sec.classList.toggle('active', i === currentSectionIndex);
+        });
+
+        startSectionTimer(initialTime, true);
+      }
+
+      if (audioState === 'played') {
+        lockAudioPermanently("Audio Already Played / Page Refreshed (Permanently Locked)");
+      }
+    });
+
+    function showModal() { document.getElementById('modal-instructions').style.display = 'flex'; }
+    function hideModal() { document.getElementById('modal-instructions').style.display = 'none'; }
+
+    function startExam() {
+      hideModal();
+      localStorage.setItem('examStarted', 'true');
+      localStorage.setItem('currentSectionIndex', '0');
+
+      document.getElementById('landing-page').classList.remove('active');
+      document.getElementById('exam-page').classList.add('active');
+      document.getElementById('section-timer').style.display = 'block';
+      
+      updateNavTabs();
+      switchSection(0);
+    }
+
+    
+  
+
+    function updateNavTabs() {
+      for (let i = 0; i < 3; i++) {
+        const tab = document.getElementById(`tab-${i}`);
+        if (sectionUnlocked[i]) {
+          tab.classList.remove('disabled');
+          tab.removeAttribute('disabled');
+          tab.textContent = sectionNames[i];
+        } else {
+          tab.classList.add('disabled');
+          tab.setAttribute('disabled', 'true');
+          tab.textContent = `${sectionNames[i]} (Locked)`;
+        }
+      }
+    }
+
+    function handleTabClick(index) {
+      if (!sectionUnlocked[index]) {
+        alert("You cannot move to this section until the timer for the current section expires.");
+        return;
+      }
+      switchSection(index);
+    }
+
+    function switchSection(index) {
+      currentSectionIndex = index;
+      localStorage.setItem('currentSectionIndex', currentSectionIndex);
+
+      document.querySelectorAll('.nav-tab').forEach((tab, i) => {
+        tab.classList.toggle('active', i === index);
+      });
+
+      document.querySelectorAll('.exam-section').forEach((sec, i) => {
+        sec.classList.toggle('active', i === index);
+      });
+
+      startSectionTimer(sectionDurations[index], true);
+    }
+
+    function startSectionTimer(durationSeconds, resetTime = false) {
+      clearInterval(timerInterval);
+      if (resetTime || !timeRemaining) {
+        timeRemaining = durationSeconds;
+      }
+      
+      const timerDisplay = document.getElementById('section-timer');
+
+      function updateDisplay() {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        timerDisplay.textContent = `Time Left: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        
+        localStorage.setItem('timeRemaining', timeRemaining);
+        
+        if (timeRemaining <= 0) {
+          clearInterval(timerInterval);
+          timerDisplay.textContent = "Section Time Finished";
+          localStorage.removeItem('timeRemaining');
+          alert(`Time is up for ${sectionNames[currentSectionIndex]}! You may now move to the next section.`);
+          
+          if (currentSectionIndex + 1 < 3) {
+            sectionUnlocked[currentSectionIndex + 1] = true;
+            updateNavTabs();
+            
+            const nextBtn = document.getElementById(`next-btn-${currentSectionIndex}`);
+            if (nextBtn) {
+              nextBtn.disabled = false;
+              if (currentSectionIndex === 0) nextBtn.textContent = "Next Section (Reading)";
+              if (currentSectionIndex === 1) nextBtn.textContent = "Next Section (Writing)";
+            }
+          } else {
+            const finishBtn = document.getElementById('next-btn-2');
+            if (finishBtn) finishBtn.disabled = false;
+          }
+          return;
+        }
+        timeRemaining--;
+      }
+
+      updateDisplay();
+      timerInterval = setInterval(updateDisplay, 1000);
+    }
+
+    function advanceToNextSection(nextIndex) {
+      if (!sectionUnlocked[nextIndex]) {
+        alert("Section is currently locked. Please wait for the timer to end.");
+        return;
+      }
+      switchSection(nextIndex);
+    }
+
+    const audio = document.getElementById('listening-audio');
+    const audioBtn = document.getElementById('start-audio-btn');
+    const audioStatusText = document.getElementById('audio-status-text');
+
+    function playAudioOnce() {
+      localStorage.setItem('audioState', 'played');
+      
+      audio.play().then(() => {
+        lockAudioPermanently("Audio playing (Cannot be paused, stopped, or replayed)");
+      }).catch(err => {
+        console.error("Audio playback failed: ", err);
+        alert("Please ensure listening.mp3 is placed in the project folder.");
+      });
+    }
+
+    function lockAudioPermanently(statusMsg) {
+      audioBtn.disabled = true;
+      audioBtn.textContent = "Audio Locked";
+      audioStatusText.textContent = statusMsg;
+    }
+
+    audio.onended = function() {
+      audioBtn.textContent = "Audio Finished";
+      audioStatusText.textContent = "Playback complete. Cannot be replayed.";
+    };
+
+    function submitExam() {
+      localStorage.clear();
+      alert("Exam completed! Thank you for participating.");
+      location.reload();
+    }
+  </script>
+</body>
+</html>
